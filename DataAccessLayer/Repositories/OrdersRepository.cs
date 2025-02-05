@@ -1,5 +1,5 @@
-﻿using DataAccessLayer.Entities;
-using DataAccessLayer.RepositoryContracts;
+﻿using DataAccessLayer.RepositoryContracts;
+using eCommerce.OrdersMicroservice.DataAccessLayer.Entities;
 using MongoDB.Driver;
 
 namespace DataAccessLayer.Repositories
