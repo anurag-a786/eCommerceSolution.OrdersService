@@ -1,5 +1,5 @@
-﻿using DataAccessLayer.Entities;
-using eCommerce.OrdersMicroservice.BusinessLogicLayer.DTO;
+﻿using eCommerce.OrdersMicroservice.BusinessLogicLayer.DTO;
+using eCommerce.OrdersMicroservice.DataAccessLayer.Entities;
 using MongoDB.Driver;
 
 namespace eCommerce.OrdersMicroservice.BusinessLogicLayer.ServiceContracts
