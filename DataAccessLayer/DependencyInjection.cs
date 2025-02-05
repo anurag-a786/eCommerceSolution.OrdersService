@@ -1,5 +1,5 @@
-﻿using DataAccessLayer.Repositories;
-using DataAccessLayer.RepositoryContracts;
+﻿using eCommerce.OrdersMicroservice.DataAccessLayer.Repositories;
+using eCommerce.OrdersMicroservice.DataAccessLayer.RepositoryContracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -26,7 +26,7 @@ namespace eCommerce.OrdersMicroservice.DataAccessLayer
             });
 
             services.AddScoped<IOrdersRepository, OrdersRepository>();
-
+            
             return services;
         }
     }
