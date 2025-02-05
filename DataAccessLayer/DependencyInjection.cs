@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
-namespace eCommerce.OrderMicroservice.DataAccessLayer
+namespace eCommerce.OrdersMicroservice.DataAccessLayer
 {
     public static class DependencyInjection
     {
