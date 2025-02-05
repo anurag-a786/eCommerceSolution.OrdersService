@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using eCommerce.OrdersMicroservice.BusinessLogicLayer.Validators;
+using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eCommerce.OrdersMicroservice.BusinessLogicLayer
@@ -9,7 +11,7 @@ namespace eCommerce.OrdersMicroservice.BusinessLogicLayer
             IConfiguration configuration)
         {
             //TO DO: Add business logic layer services into the IoC container
-
+            services.AddValidatorsFromAssemblyContaining<OrderAddRequestValidator>();
 
             return services;
         }
