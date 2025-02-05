@@ -1,4 +1,5 @@
-﻿using eCommerce.OrdersMicroservice.BusinessLogicLayer.Validators;
+﻿using eCommerce.ordersMicroservice.BusinessLogicLayer.Mappers;
+using eCommerce.OrdersMicroservice.BusinessLogicLayer.Validators;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ namespace eCommerce.OrdersMicroservice.BusinessLogicLayer
         {
             //TO DO: Add business logic layer services into the IoC container
             services.AddValidatorsFromAssemblyContaining<OrderAddRequestValidator>();
+            services.AddAutoMapper(typeof(OrderAddRequestToOrderMappingProfile).Assembly);
 
             return services;
         }
