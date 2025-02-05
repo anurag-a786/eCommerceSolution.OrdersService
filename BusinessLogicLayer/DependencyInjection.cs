@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eCommerce.OrderMicroservice.BusinessLogicLayer
+namespace eCommerce.OrdersMicroservice.BusinessLogicLayer
 {
     public static class DependencyInjection
     {
