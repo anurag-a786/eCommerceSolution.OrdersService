@@ -154,24 +154,42 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
             return updatedOrderResponse;
         }
 
-        public Task<bool> DeleteOrder(Guid orderID)
+        public async Task<bool> DeleteOrder(Guid orderID)
         {
-            throw new NotImplementedException();
+            FilterDefinition<Order> filter = Builders<Order>.Filter.Eq(temp => temp.OrderID, orderID);
+            Order? existingOrder = await _ordersRepository.GetOrderByCondition(filter);
+
+            if (existingOrder == null)
+            {
+                return false;
+            }
+
+            bool isDeleted = await _ordersRepository.DeleteOrder(orderID);
+            return isDeleted;
         }
 
-        public Task<OrderResponse?> GetOrderByCondition(FilterDefinition<Order> filter)
+        public async Task<List<OrderResponse?>> GetOrders()
         {
-            throw new NotImplementedException();
+            IEnumerable<Order?> orders = await _ordersRepository.GetOrders();
+            IEnumerable<OrderResponse?> orderResponses = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+            return orderResponses.ToList();
         }
 
-        public Task<List<OrderResponse?>> GetOrders()
+        public async Task<OrderResponse?> GetOrderByCondition(FilterDefinition<Order> filter)
         {
-            throw new NotImplementedException();
+            Order? order = await _ordersRepository.GetOrderByCondition(filter);
+            if (order == null)
+                return null;
+
+            OrderResponse orderResponse = _mapper.Map<OrderResponse>(order);
+            return orderResponse;
         }
 
-        public Task<List<OrderResponse?>> GetOrdersByCondition(FilterDefinition<Order> filter)
+        public async Task<List<OrderResponse?>> GetOrdersByCondition(FilterDefinition<Order> filter)
         {
-            throw new NotImplementedException();
+            IEnumerable<Order?> orders = await _ordersRepository.GetOrdersByCondition(filter);
+            IEnumerable<OrderResponse?> orderResponses = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+            return orderResponses.ToList();
         }
     }
 }
