@@ -27,7 +27,7 @@ namespace OrdersMicroservice.API.ApiControllers
         }
 
         //GET: /api/Orders/search/orderid/{orderID}
-        [HttpGet("/search/orderid/{orderID}")]
+        [HttpGet("search/orderid/{orderID}")]
         public async Task<OrderResponse?> GetOrderByOrderID(Guid orderID)
         {
             FilterDefinition<Order> filter = Builders<Order>.Filter.Eq(temp => temp.OrderID, orderID);
@@ -37,7 +37,7 @@ namespace OrdersMicroservice.API.ApiControllers
         }
 
         //GET: /api/Orders/search/productid/{productID}
-        [HttpGet("/search/productid/{productID}")]
+        [HttpGet("search/productid/{productID}")]
         public async Task<IEnumerable<OrderResponse?>> GetOrdersByProductID(Guid productID)
         {
             FilterDefinition<Order> filter = Builders<Order>.Filter.ElemMatch(temp => temp.OrderItems,
@@ -49,7 +49,7 @@ namespace OrdersMicroservice.API.ApiControllers
         }
 
         //GET: /api/Orders/search/orderDate/{orderDate}
-        [HttpGet("/search/orderDate/{orderDate}")]
+        [HttpGet("search/orderDate/{orderDate}")]
         public async Task<IEnumerable<OrderResponse?>> GetOrdersByOrderDate(DateTime orderDate)
         {
             FilterDefinition<Order> filter = Builders<Order>.Filter.
@@ -60,7 +60,7 @@ namespace OrdersMicroservice.API.ApiControllers
         }
 
         //GET: /api/Orders//search/userid/{userID}
-        [HttpGet("/search/userid/{userID}")]
+        [HttpGet("search/userid/{userID}")]
         public async Task<IEnumerable<OrderResponse?>> GetOrdersByUserID(Guid userId)
         {
             FilterDefinition<Order> filter = Builders<Order>.Filter.Eq(temp =>temp.UserID, userId);
@@ -82,7 +82,7 @@ namespace OrdersMicroservice.API.ApiControllers
 
             if (orderResponse == null)
             {
-                return Problem("Error in adding product");
+                return Problem("Error in adding order");
             }
 
 
@@ -107,7 +107,7 @@ namespace OrdersMicroservice.API.ApiControllers
 
             if (orderResponse == null)
             {
-                return Problem("Error in adding product");
+                return Problem("Error in updating order");
             }
 
             return Ok(orderResponse);
@@ -126,7 +126,7 @@ namespace OrdersMicroservice.API.ApiControllers
 
             if (!isDeleted)
             {
-                return Problem("Error in adding product");
+                return Problem("Error in deleting order");
             }
 
             return Ok(isDeleted);
