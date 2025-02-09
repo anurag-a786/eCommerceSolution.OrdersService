@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.DTO;
+using eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClients;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.ServiceContracts;
 using eCommerce.OrdersMicroservice.DataAccessLayer.Entities;
 using eCommerce.OrdersMicroservice.DataAccessLayer.RepositoryContracts;
@@ -17,12 +18,14 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
         private readonly IValidator<OrderItemUpdateRequest> _orderItemUpdateRequestValidator;
         private readonly IMapper _mapper;
         private IOrdersRepository _ordersRepository;
+        private UsersMicroserviceClient _usersMicroserviceClient;
 
         public OrdersService(IOrdersRepository ordersRepository, IMapper mapper,
             IValidator<OrderAddRequest> orderAddRequestValidator, 
             IValidator<OrderItemAddRequest> orderItemAddRequestValidator, 
             IValidator<OrderUpdateRequest> orderUpdateRequestValidator, 
-            IValidator<OrderItemUpdateRequest> orderItemUpdateRequestValidator)
+            IValidator<OrderItemUpdateRequest> orderItemUpdateRequestValidator,
+            UsersMicroserviceClient usersMicroserviceClient)
         {
             _orderAddRequestValidator = orderAddRequestValidator;
             _orderItemAddRequestValidator = orderItemAddRequestValidator;
@@ -30,6 +33,7 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
             _orderItemUpdateRequestValidator = orderItemUpdateRequestValidator;
             _mapper = mapper;
             _ordersRepository = ordersRepository;
+            _usersMicroserviceClient = usersMicroserviceClient;
         }
 
         public async Task<OrderResponse?> AddOrder(OrderAddRequest orderAddRequest)
@@ -64,7 +68,11 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
             }
 
             //TO DO: Add logic for checking if UserID exists in Users microservice
-
+            UserDTO? user = await _usersMicroserviceClient.GetUserByUserID(orderAddRequest.UserID);
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid User ID");
+            }
 
             ////Convert data from OrderAddRequest to Order
             //Map OrderAddRequest to 'Order' type (it invokes OrderAddRequestToOrderMappingProfile class)
@@ -126,7 +134,11 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
             }
 
             //TO DO: Add logic for checking if UserID exists in Users microservice
-
+            UserDTO? user = await _usersMicroserviceClient.GetUserByUserID(orderUpdateRequest.UserID);
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid User ID");
+            }
 
             ////Convert data from OrderAddRequest to Order
             //Map OrderAddRequest to 'Order' type (it invokes OrderAddRequestToOrderMappingProfile class)
