@@ -10,6 +10,8 @@ services:
      - MONGODB_DATABASE=OrdersDatabase
      - UsersMicroserviceName=users-microservice
      - UsersMicroservicePort=9090
+     - ProductsMicroserviceName=products-microservice
+     - ProductsMicroservicePort=8080
     ports:
      - "7000:8080"
     networks:
@@ -28,7 +30,7 @@ services:
     - orders-mongodb-network
 
 
-  productsmicroservice-api:
+  products-microservice:
    image: products-microservice:latest
    environment:
     - ASPNETCORE_HTTP_PORTS=8080
@@ -48,6 +50,7 @@ services:
 
   mysql-container:
    image: mysql:8.0
+   command: --lower_case_table_names=1
    environment:
     - MYSQL_ROOT_PASSWORD=admin
    ports:
