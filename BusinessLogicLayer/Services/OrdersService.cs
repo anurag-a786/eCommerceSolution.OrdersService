@@ -19,13 +19,15 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
         private readonly IMapper _mapper;
         private IOrdersRepository _ordersRepository;
         private UsersMicroserviceClient _usersMicroserviceClient;
+        private ProductsMicroserviceClient _productsMicroserviceClient;
 
         public OrdersService(IOrdersRepository ordersRepository, IMapper mapper,
             IValidator<OrderAddRequest> orderAddRequestValidator, 
             IValidator<OrderItemAddRequest> orderItemAddRequestValidator, 
             IValidator<OrderUpdateRequest> orderUpdateRequestValidator, 
             IValidator<OrderItemUpdateRequest> orderItemUpdateRequestValidator,
-            UsersMicroserviceClient usersMicroserviceClient)
+            UsersMicroserviceClient usersMicroserviceClient,
+            ProductsMicroserviceClient productsMicroserviceClient)
         {
             _orderAddRequestValidator = orderAddRequestValidator;
             _orderItemAddRequestValidator = orderItemAddRequestValidator;
@@ -34,6 +36,7 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
             _mapper = mapper;
             _ordersRepository = ordersRepository;
             _usersMicroserviceClient = usersMicroserviceClient;
+            _productsMicroserviceClient = productsMicroserviceClient;
         }
 
         public async Task<OrderResponse?> AddOrder(OrderAddRequest orderAddRequest)
@@ -64,6 +67,13 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
                     string errors = string.Join(", ", 
                         orderItemAddRequestValidationResult.Errors.Select(temp => temp.ErrorMessage));
                     throw new ArgumentException(errors);
+                }
+
+                //TO DO: Add logic for checking if ProductID exists in Products microservice
+                ProductDTO? product = await _productsMicroserviceClient.GetProductByProductID(orderItemAddRequest.ProductID);
+                if (product == null)
+                {
+                    throw new ArgumentException("Invalid Product ID");
                 }
             }
 
@@ -120,16 +130,22 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
             }
 
             //Validate order items using Fluent Validation
-            foreach (OrderItemUpdateRequest orderItemAddRequest in orderUpdateRequest.OrderItems)
+            foreach (OrderItemUpdateRequest orderItemUpdateRequest in orderUpdateRequest.OrderItems)
             {
-                ValidationResult orderItemUpdateRequestValidationResult =
-                    await _orderItemUpdateRequestValidator.ValidateAsync(orderItemAddRequest);
+                ValidationResult orderItemUpdateRequestValidationResult = await _orderItemUpdateRequestValidator.ValidateAsync(orderItemUpdateRequest);
 
                 if (!orderItemUpdateRequestValidationResult.IsValid)
                 {
-                    string errors = string.Join(", ",
-                        orderItemUpdateRequestValidationResult.Errors.Select(temp => temp.ErrorMessage));
+                    string errors = string.Join(", ", orderItemUpdateRequestValidationResult.Errors.Select(temp => temp.ErrorMessage));
                     throw new ArgumentException(errors);
+                }
+
+
+                //TO DO: Add logic for checking if ProductID exists in Products microservice
+                ProductDTO? product = await _productsMicroserviceClient.GetProductByProductID(orderItemUpdateRequest.ProductID);
+                if (product == null)
+                {
+                    throw new ArgumentException("Invalid Product ID");
                 }
             }
 
