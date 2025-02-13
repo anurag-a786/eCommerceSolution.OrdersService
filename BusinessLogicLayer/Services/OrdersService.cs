@@ -125,6 +125,15 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
                 }
             }
 
+            //TO DO: Load UserPersonName and Email from Users Microservice
+            if (addedOrderResponse != null)
+            {
+                if (user != null)
+                {
+                    _mapper.Map<UserDTO, OrderResponse>(user, addedOrderResponse);
+                }
+            }
+
             return addedOrderResponse;
         }
 
@@ -215,6 +224,15 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
                 }
             }
 
+            //TO DO: Load UserPersonName and Email from Users Microservice
+            if (updatedOrderResponse != null)
+            {
+                if (user != null)
+                {
+                    _mapper.Map<UserDTO, OrderResponse>(user, updatedOrderResponse);
+                }
+            }
+
             return updatedOrderResponse;
         }
 
@@ -254,6 +272,13 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
 
                     _mapper.Map<ProductDTO, OrderItemResponse>(productDTO, orderItemResponse);
                 }
+
+                //TO DO: Load UserPersonName and Email from Users Microservice
+                UserDTO? user = await _usersMicroserviceClient.GetUserByUserID(orderResponse.UserID);
+                if (user != null)
+                {
+                    _mapper.Map<UserDTO, OrderResponse>(user, orderResponse);
+                }
             }
 
             return orderResponses.ToList();
@@ -281,6 +306,16 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
                 }
             }
 
+            //TO DO: Load UserPersonName and Email from Users Microservice
+            if(orderResponse!= null)
+            {
+                UserDTO? user = await _usersMicroserviceClient.GetUserByUserID(orderResponse.UserID);
+                if (user != null)
+                {
+                    _mapper.Map<UserDTO, OrderResponse>(user, orderResponse);
+                }
+            }
+
             return orderResponse;
         }
 
@@ -305,6 +340,13 @@ namespace eCommerce.ordersMicroservice.BusinessLogicLayer.Services
                         continue;
 
                     _mapper.Map<ProductDTO, OrderItemResponse>(productDTO, orderItemResponse);
+                }
+
+                //TO DO: Load UserPersonName and Email from Users Microservice
+                UserDTO? user = await _usersMicroserviceClient.GetUserByUserID(orderResponse.UserID);
+                if (user != null)
+                {
+                    _mapper.Map<UserDTO, OrderResponse>(user, orderResponse);
                 }
             }
 
