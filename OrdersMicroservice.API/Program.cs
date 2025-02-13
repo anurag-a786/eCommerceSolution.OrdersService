@@ -4,6 +4,7 @@ using FluentValidation.AspNetCore;
 using eCommerce.OrdersMicroservice.API.Middleware;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClients;
 using Polly;
+using eCommerce.OrdersMicroservice.BusinessLogicLayer.Policies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,19 +31,12 @@ builder.Services.AddCors(options => {
     });
 });
 
+builder.Services.AddTransient<IUsersMicroservicePolicies, UsersMicroservicePolicies>();
+
 builder.Services.AddHttpClient<UsersMicroserviceClient>(client =>
 {
     client.BaseAddress = new Uri($"http://{builder.Configuration["UsersMicroserviceName"]}:{builder.Configuration["UsersMicroservicePort"]}");
-}).AddPolicyHandler(
-    Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
-  .WaitAndRetryAsync(
-     retryCount: 5, //Number of retries
-     sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(2), // Delay between retries
-     onRetry: (outcome, timespan, retryAttempt, context) =>
-     {
-         //TO DO: add logs
-     })
-    );
+}).AddPolicyHandler(builder.Services.BuildServiceProvider().GetRequiredService<IUsersMicroservicePolicies>().GetRetryPolicy());
 
 builder.Services.AddHttpClient<ProductsMicroserviceClient>(client => {
     client.BaseAddress = new Uri($"http://{builder.Configuration["ProductsMicroserviceName"]}:{builder.Configuration["ProductsMicroservicePort"]}");
