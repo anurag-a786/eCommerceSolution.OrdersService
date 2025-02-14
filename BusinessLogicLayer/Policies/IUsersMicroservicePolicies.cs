@@ -6,6 +6,7 @@ namespace eCommerce.OrdersMicroservice.BusinessLogicLayer.Policies
     {
         IAsyncPolicy<HttpResponseMessage> GetRetryPolicy();
         IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy();
+        IAsyncPolicy<HttpResponseMessage> GetTimeoutPolicy();
     }
 }
 
