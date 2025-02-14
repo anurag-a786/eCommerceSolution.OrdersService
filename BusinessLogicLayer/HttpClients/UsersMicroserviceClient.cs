@@ -1,6 +1,7 @@
 ﻿using eCommerce.OrdersMicroservice.BusinessLogicLayer.DTO;
 using Microsoft.Extensions.Logging;
 using Polly.CircuitBreaker;
+using Polly.Timeout;
 using System.Net.Http.Json;
 
 namespace eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClients
@@ -61,6 +62,16 @@ namespace eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClients
                         PersonName: "Temporarily Unavailable",
                         Email: "Temporarily Unavailable",
                         Gender: "Temporarily Unavailable",
+                        UserID: Guid.Empty);
+            }
+            catch (TimeoutRejectedException ex)
+            {
+                _logger.LogError(ex, "Timeout occurred while fetching user data. Returning dummy data");
+
+                return new UserDTO(
+                        PersonName: "Temporarily Unavailable (timeout)",
+                        Email: "Temporarily Unavailable (timeout)",
+                        Gender: "Temporarily Unavailable (timeout)",
                         UserID: Guid.Empty);
             }
         }
