@@ -4,6 +4,7 @@ using Polly;
 using Polly.Fallback;
 using System.Text.Json;
 using System.Text;
+using Polly.Bulkhead;
 
 namespace eCommerce.OrdersMicroservice.BusinessLogicLayer.Policies
 {
@@ -39,6 +40,21 @@ namespace eCommerce.OrdersMicroservice.BusinessLogicLayer.Policies
                     return response;
                 });
             
+            return policy;
+        }
+
+        public IAsyncPolicy<HttpResponseMessage> GetBulkheadIsolationPolicy()
+        {
+            AsyncBulkheadPolicy<HttpResponseMessage> policy = Policy.BulkheadAsync<HttpResponseMessage>(
+              maxParallelization: 2, //Allows up to 2 concurrent requests
+              maxQueuingActions: 40, //Queue up to 40 additional requests
+              onBulkheadRejectedAsync: (context) => {
+                  _logger.LogWarning("BulkheadIsolation triggered. Can't send any more requests since the queue is full");
+
+                  throw new BulkheadRejectedException("Bulkhead queue is full");
+              }
+              );
+
             return policy;
         }
     }
