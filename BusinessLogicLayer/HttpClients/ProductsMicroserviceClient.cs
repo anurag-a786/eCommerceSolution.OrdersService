@@ -25,12 +25,11 @@ namespace eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClients
         {
             try
             {
+                //// Reading data from Redis Cache
                 //Key: product:123
                 //Value: { "ProductName: "...", ...}
-
                 string cacheKey = $"product:{productID}";
                 string? cachedProduct = await _distributedCache.GetStringAsync(cacheKey);
-
                 if (cachedProduct != null)
                 {
                     ProductDTO? productFromCache = JsonSerializer.Deserialize<ProductDTO>(cachedProduct);
@@ -55,13 +54,22 @@ namespace eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClients
                     }
                 }
 
-
                 ProductDTO? product = await response.Content.ReadFromJsonAsync<ProductDTO>();
 
                 if (product == null)
                 {
                     throw new ArgumentException("Invalid Product ID");
                 }
+
+                //// Writing data into Redis Cache
+                //Key: product:{productID}
+                //Value: { "ProductName": "..", ..}
+                string productJson = JsonSerializer.Serialize(product);
+                DistributedCacheEntryOptions options = new DistributedCacheEntryOptions()
+                  .SetAbsoluteExpiration(TimeSpan.FromSeconds(30))
+                  .SetSlidingExpiration(TimeSpan.FromSeconds(10));
+                string cacheKeyToWrite = $"product:{productID}";
+                await _distributedCache.SetStringAsync(cacheKeyToWrite, productJson, options);
 
                 return product;
             }
