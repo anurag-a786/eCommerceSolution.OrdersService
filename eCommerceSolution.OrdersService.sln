@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAcce
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DF950992-101A-43C9-A852-28024C4F6637}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{2682FD3F-736B-4B7B-8E30-570B19004DB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DF950992-101A-43C9-A852-28024C4F6637}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF950992-101A-43C9-A852-28024C4F6637}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF950992-101A-43C9-A852-28024C4F6637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2682FD3F-736B-4B7B-8E30-570B19004DB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2682FD3F-736B-4B7B-8E30-570B19004DB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2682FD3F-736B-4B7B-8E30-570B19004DB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2682FD3F-736B-4B7B-8E30-570B19004DB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
