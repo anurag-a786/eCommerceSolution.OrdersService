@@ -15,7 +15,12 @@
         "Post",
         "Options"
       ],
-      "UpstreamScheme": "http"
+      "UpstreamScheme": "http",
+
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "orders"
+      }
     },
 
 
