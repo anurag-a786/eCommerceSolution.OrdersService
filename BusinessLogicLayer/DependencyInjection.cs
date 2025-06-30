@@ -1,6 +1,6 @@
-﻿using eCommerce.ordersMicroservice.BusinessLogicLayer.Services;
-using eCommerce.OrdersMicroservice.BusinessLogicLayer.Mappers;
+﻿using eCommerce.OrdersMicroservice.BusinessLogicLayer.Mappers;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.ServiceContracts;
+using eCommerce.OrdersMicroservice.BusinessLogicLayer.Services;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.Validators;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
