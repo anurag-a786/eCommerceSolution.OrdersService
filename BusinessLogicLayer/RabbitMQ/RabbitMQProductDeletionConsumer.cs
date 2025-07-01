@@ -41,19 +41,18 @@ public class RabbitMQProductDeletionConsumer : IDisposable, IRabbitMQProductDele
 
     public void Consume()
     {
-        // string routingKey = "product.delete";
+        string routingKey = "product.#";
         string queueName = "orders.product.delete.queue";
 
         //Create exchange
         string exchangeName = _configuration["RabbitMQ_Products_Exchange"]!;
-        _channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Fanout, durable: true);
+        _channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Topic, durable: true);
 
         //Create message queue
         _channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null); //x-message-ttl | x-max-length | x-expired 
 
         //Bind the message to exchange
-        _channel.QueueBind(queue: queueName, exchange: exchangeName, routingKey: string.Empty);
-
+        _channel.QueueBind(queue: queueName, exchange: exchangeName, routingKey: routingKey);
 
         EventingBasicConsumer consumer = new EventingBasicConsumer(_channel);
 
