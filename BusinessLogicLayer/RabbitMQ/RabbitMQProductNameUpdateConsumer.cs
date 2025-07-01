@@ -39,18 +39,18 @@ namespace eCommerce.ProductsService.BusinessLogicLayer.RabbitMQ
 
         public void Consume()
         {
-            string routingKey = "product.update.name";
+            //string routingKey = "product.update.name";
             string queueName = "orders.product.update.name.queue";
 
             //Create exchange
             string exchangeName = _configuration["RabbitMQ_Products_Exchange"]!;
-            _channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Direct, durable: true);
+            _channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Fanout, durable: true);
 
             //Create message queue
             _channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null); //x-message-ttl | x-max-length | x-expired 
 
             //Bind the message to exchange
-            _channel.QueueBind(queue: queueName, exchange: exchangeName, routingKey: routingKey);
+            _channel.QueueBind(queue: queueName, exchange: exchangeName, routingKey: string.Empty);
 
             EventingBasicConsumer consumer = new EventingBasicConsumer(_channel);
 
