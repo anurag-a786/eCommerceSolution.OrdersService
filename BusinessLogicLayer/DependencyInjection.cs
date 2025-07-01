@@ -1,4 +1,5 @@
-﻿using eCommerce.OrdersMicroservice.BusinessLogicLayer.Mappers;
+﻿using BusinessLogicLayer.RabbitMQ;
+using eCommerce.OrdersMicroservice.BusinessLogicLayer.Mappers;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.RabbitMQ;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.ServiceContracts;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.Services;
@@ -27,7 +28,11 @@ namespace eCommerce.OrdersMicroservice.BusinessLogicLayer
 
             services.AddTransient<IRabbitMQProductNameUpdateConsumer, RabbitMQProductNameUpdateConsumer>();
 
+            services.AddTransient<IRabbitMQProductDeletionConsumer, RabbitMQProductDeletionConsumer>();
+
             services.AddHostedService<RabbitMQProductNameUpdateHostedService>();
+
+            services.AddHostedService<RabbitMQProductDeletionHostedService>();
 
             return services;
         }

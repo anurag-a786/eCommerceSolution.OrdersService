@@ -63,7 +63,10 @@ namespace eCommerce.ProductsService.BusinessLogicLayer.RabbitMQ
                 {
                     ProductNameUpdateMessage? productNameUpdateMessage = JsonSerializer.Deserialize<ProductNameUpdateMessage>(message);
 
-                    _logger.LogInformation($"Product name updated: {productNameUpdateMessage.ProductID}, New name: {productNameUpdateMessage.NewName}");
+                    if (productNameUpdateMessage != null)
+                    {
+                        _logger.LogInformation($"Product name updated: {productNameUpdateMessage.ProductID}, New name: {productNameUpdateMessage.NewName}");
+                    }
                 }
             };
 
